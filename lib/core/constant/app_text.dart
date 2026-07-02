@@ -28,6 +28,11 @@ class AppTextStyles {
     weight: FontWeight.w400,
     color: AppColors.greyText,
     height: 1.4,
+  );static TextStyle subHeading1 = _inter(
+    size: 14,
+    weight: FontWeight.w400,
+    color: AppColors.black,
+    height: 1.4,
   );
 
   static TextStyle cardTitle = _inter(size: 14.5, weight: FontWeight.w600);

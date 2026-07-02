@@ -18,8 +18,9 @@ class SelectPostScreen extends StatelessWidget {
 
     return Scaffold(
       backgroundColor: AppColors.white,
+      resizeToAvoidBottomInset: true,
       body: SafeArea(
-        child: SingleChildScrollView(
+        child: Padding(
           padding: EdgeInsets.symmetric(horizontal: AppResponsive.w(20)),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -53,16 +54,14 @@ class SelectPostScreen extends StatelessWidget {
                   return ListView.separated(
                     scrollDirection: Axis.horizontal,
                     itemCount: 3,
-                    separatorBuilder: (_, __) => SizedBox(width: AppResponsive.w(12)),
+                    separatorBuilder: (_, __) =>
+                        SizedBox(width: AppResponsive.w(12)),
                     itemBuilder: (context, index) {
                       final selected = selectedIndex == index;
 
                       return GestureDetector(
                         onTap: () => c.selectPost(index),
-                        child: _PostItem(
-                          index: index,
-                          selected: selected,
-                        ),
+                        child: _PostItem(index: index, selected: selected),
                       );
                     },
                   );
@@ -74,7 +73,7 @@ class SelectPostScreen extends StatelessWidget {
                 child: Padding(
                   padding: EdgeInsets.only(top: AppResponsive.h(8)),
                   child: Text(
-                    'View More⌄',
+                    'View More ⌄',
                     style: AppTextStyles.caption.copyWith(
                       fontSize: AppResponsive.sp(11),
                       color: const Color(0xFFA6A6A6),
@@ -89,7 +88,7 @@ class SelectPostScreen extends StatelessWidget {
                 'Name your Automation',
                 style: AppTextStyles.heading.copyWith(
                   fontSize: AppResponsive.sp(16),
-                  fontWeight: FontWeight.w500,
+                  fontWeight: FontWeight.w400,
                   color: AppColors.black,
                 ),
               ),
@@ -116,14 +115,15 @@ class SelectPostScreen extends StatelessWidget {
                       horizontal: AppResponsive.w(14),
                     ),
                     enabledBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(AppResponsive.r(14)),
+                      borderRadius: BorderRadius.circular(AppResponsive.r(20)),
                       borderSide: const BorderSide(
                         color: Color(0xFFD6B8FF),
                         width: 1,
                       ),
                     ),
+
                     focusedBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(AppResponsive.r(14)),
+                      borderRadius: BorderRadius.circular(AppResponsive.r(20)),
                       borderSide: const BorderSide(
                         color: Color(0xFFA774FF),
                         width: 1.2,
@@ -133,33 +133,35 @@ class SelectPostScreen extends StatelessWidget {
                 ),
               ),
 
-              SizedBox(height: AppResponsive.h(18)),
+              const Spacer(),
 
-              Row(
-                children: [
-                  Expanded(
-                    child: SizedBox(
-                      height: AppResponsive.h(46),
-                      child: SecondaryButton(
-                        label: 'Back',
-                        onTap: () => Get.back(),
+              Padding(
+                padding: EdgeInsets.only(bottom: AppResponsive.h(65)),
+                child: Row(
+                  children: [
+                    Expanded(
+                      child: SizedBox(
+                        height: AppResponsive.h(46),
+                        child: GradientButton(
+                          label: 'Back',
+                          isOutlined: true,
+                          onTap: () => Get.back(),
+                        ),
                       ),
                     ),
-                  ),
-                  SizedBox(width: AppResponsive.w(26)),
-                  Expanded(
-                    child: SizedBox(
-                      height: AppResponsive.h(46),
-                      child: GradientButton(
-                        label: 'Next',
-                        onTap: () => Get.toNamed(AppRoutes.replyTo),
+                    SizedBox(width: AppResponsive.w(26)),
+                    Expanded(
+                      child: SizedBox(
+                        height: AppResponsive.h(46),
+                        child: GradientButton(
+                          label: 'Next',
+                          onTap: () => Get.toNamed(AppRoutes.replyTo),
+                        ),
                       ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
-
-              SizedBox(height: AppResponsive.h(30)),
             ],
           ),
         ),
@@ -172,10 +174,7 @@ class _PostItem extends StatelessWidget {
   final int index;
   final bool selected;
 
-  const _PostItem({
-    required this.index,
-    required this.selected,
-  });
+  const _PostItem({required this.index, required this.selected});
 
   @override
   Widget build(BuildContext context) {
@@ -223,9 +222,7 @@ class _PostItem extends StatelessWidget {
                 shape: BoxShape.circle,
                 color: selected ? const Color(0xFFA774FF) : Colors.white70,
                 border: Border.all(
-                  color: selected
-                      ? AppColors.white
-                      : const Color(0xFF7A7A7A),
+                  color: selected ? AppColors.white : const Color(0xFF7A7A7A),
                   width: 1.4,
                 ),
               ),
@@ -236,6 +233,7 @@ class _PostItem extends StatelessWidget {
     );
   }
 }
+
 class _AllPostsToggle extends StatelessWidget {
   final AutoDmController controller;
 
@@ -249,10 +247,7 @@ class _AllPostsToggle extends StatelessWidget {
       decoration: BoxDecoration(
         color: AppColors.white,
         borderRadius: BorderRadius.circular(AppResponsive.r(13)),
-        border: Border.all(
-          color: const Color(0xFFD6B8FF),
-          width: 1,
-        ),
+        border: Border.all(color: const Color(0xFFD6B8FF), width: 1),
       ),
       child: Row(
         children: [
@@ -268,13 +263,16 @@ class _AllPostsToggle extends StatelessWidget {
           Obx(() {
             final value = controller.showAllPosts.value;
 
-            return Switch(
-              value: value,
-              activeColor: AppColors.white,
-              activeTrackColor: const Color(0xFFA774FF),
-              inactiveThumbColor: const Color(0xFFA6A6A6),
-              inactiveTrackColor: AppColors.white,
-              onChanged: controller.toggleShowAllPosts,
+            return Transform.scale(
+              scale: 0.75,
+              child: Switch(
+                value: value,
+                activeColor: AppColors.white,
+                activeTrackColor: const Color(0xFFA774FF),
+                inactiveThumbColor: const Color(0xFFA6A6A6),
+                inactiveTrackColor: const Color(0xFFE8E8E8),
+                onChanged: controller.toggleShowAllPosts,
+              ),
             );
           }),
         ],

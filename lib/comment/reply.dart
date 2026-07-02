@@ -1,14 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+
 import '../automation/controller/autodm_con.dart';
 import '../core/constant/app_colors.dart';
 import '../core/constant/app_responsive.dart';
 import '../core/constant/app_text.dart';
+import '../core/constant/routes/app_routes.dart';
 import '../core/widget/gradient_button.dart';
 import '../core/widget/step_progress_indicator.dart';
 
 class ReplyToScreen extends StatelessWidget {
   const ReplyToScreen({super.key});
+
+  static const Color purple = Color(0xFFC78BFF);
+  static const Color deepPurple = Color(0xFF9B6BFF);
+  static const Color blue = Color(0xFF5F6CFF);
 
   @override
   Widget build(BuildContext context) {
@@ -16,101 +22,110 @@ class ReplyToScreen extends StatelessWidget {
     final AutoDmController c = Get.find<AutoDmController>();
 
     return Scaffold(
-      backgroundColor: AppColors.white,
+      backgroundColor:  Colors.white,
+      resizeToAvoidBottomInset: true,
       body: SafeArea(
         child: Padding(
-          padding: EdgeInsets.symmetric(horizontal: AppResponsive.w(22)),
+          padding: EdgeInsets.fromLTRB(
+            AppResponsive.w(22),
+            AppResponsive.h(18),
+            AppResponsive.w(22),
+            AppResponsive.h(26),
+          ),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              SizedBox(height: AppResponsive.h(42)),
-
               Text(
                 'Reply to',
                 style: AppTextStyles.heading.copyWith(
                   fontSize: AppResponsive.sp(16),
-                  fontWeight: FontWeight.w500,
+                  fontWeight: FontWeight.w600,
                   color: AppColors.black,
                 ),
               ),
 
-              SizedBox(height: AppResponsive.h(4)),
+              SizedBox(height: AppResponsive.h(2)),
 
               Text(
                 'choose which comments should get an automatic reply',
                 style: AppTextStyles.subHeading.copyWith(
                   fontSize: AppResponsive.sp(11),
-                  color: const Color(0xFF9A9A9A),
+                  color: const Color(0xFFA2A2A2),
                 ),
               ),
 
-              SizedBox(height: AppResponsive.h(26)),
+              SizedBox(height: AppResponsive.h(2)),
 
               const StepProgressBar(currentStep: 2),
 
-              SizedBox(height: AppResponsive.h(30)),
+              SizedBox(height: AppResponsive.h(50)),
 
               Obx(
-                    () => _ReplyRadioBox(
+                () => _ReplyChoiceBox(
                   label: 'Any Comment',
                   selected: c.selectedReplyTo.value == ReplyToType.anyComment,
                   onTap: () => c.selectReplyTo(ReplyToType.anyComment),
                 ),
               ),
 
-              SizedBox(height: AppResponsive.h(16)),
+              SizedBox(height: AppResponsive.h(8)),
 
               Text(
                 'Specific Keywords',
                 style: AppTextStyles.heading.copyWith(
-                  fontSize: AppResponsive.sp(16),
-                  fontWeight: FontWeight.w500,
+                  fontSize: AppResponsive.sp(14),
+                  fontWeight: FontWeight.w600,
                   color: AppColors.black,
                 ),
               ),
 
+              SizedBox(height: AppResponsive.h(18)),
+
+              _KeywordInput(controller: c),
+
               SizedBox(height: AppResponsive.h(12)),
 
               Obx(
-                    () => _KeywordField(
-                  enabled: c.selectedReplyTo.value ==
-                      ReplyToType.specificKeywords,
-                  onChanged: c.setKeywords,
-                  onAddTap: () =>
-                      c.selectReplyTo(ReplyToType.specificKeywords),
+                () => Wrap(
+                  spacing: AppResponsive.w(8),
+                  runSpacing: AppResponsive.h(8),
+                  children: c.keywords
+                      .map(
+                        (keyword) => _KeywordChip(
+                          label: keyword,
+                          onRemove: () => c.removeKeyword(keyword),
+                        ),
+                      )
+                      .toList(),
                 ),
               ),
 
-              SizedBox(height: AppResponsive.h(16)),
+              const Spacer(),
 
-              Row(
-                children: [
-                  Expanded(
-                    child: SizedBox(
-                      height: AppResponsive.h(46),
-                      child: SecondaryButton(
-                        label: 'Back',
+              Padding(
+                padding: EdgeInsets.only(bottom: AppResponsive.h(65)),
+                child: Row(
+                  children: [
+                    Expanded(
+                      child: GradientButton(
+                        label: "Back",
+                        isOutlined: true,
+                        height: AppResponsive.h(46),
                         onTap: () => Get.back(),
                       ),
                     ),
-                  ),
-                  SizedBox(width: AppResponsive.w(26)),
-                  Expanded(
-                    child: SizedBox(
-                      height: AppResponsive.h(46),
+                    SizedBox(width: AppResponsive.w(22)),
+                    Expanded(
                       child: GradientButton(
-                        label: 'Next',
+                        label: "Next",
+                        height: AppResponsive.h(46),
                         onTap: () {
-                          Get.snackbar(
-                            'Automation ready',
-                            'Your Smart Auto DM has been configured.',
-                            snackPosition: SnackPosition.BOTTOM,
-                          );
+                          Get.toNamed(AppRoutes.sendAdm);
                         },
                       ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
             ],
           ),
@@ -119,65 +134,68 @@ class ReplyToScreen extends StatelessWidget {
     );
   }
 }
-class _ReplyRadioBox extends StatelessWidget {
+
+class _ReplyChoiceBox extends StatelessWidget {
   final String label;
   final bool selected;
   final VoidCallback onTap;
 
-  const _ReplyRadioBox({
+  const _ReplyChoiceBox({
     required this.label,
     required this.selected,
     required this.onTap,
   });
 
+  static const Color purple = Color(0xFFC78BFF);
+
   @override
   Widget build(BuildContext context) {
     return InkWell(
       onTap: onTap,
-      borderRadius: BorderRadius.circular(AppResponsive.r(14)),
+      borderRadius: BorderRadius.circular(AppResponsive.r(30)),
       child: Container(
-        height: AppResponsive.h(43),
+        height: AppResponsive.h(38),
         padding: EdgeInsets.symmetric(horizontal: AppResponsive.w(14)),
         decoration: BoxDecoration(
           color: AppColors.white,
-          borderRadius: BorderRadius.circular(AppResponsive.r(14)),
-          border: Border.all(
-            color: const Color(0xFFD6B8FF),
-            width: 1,
-          ),
+          borderRadius: BorderRadius.circular(AppResponsive.r(30)),
+          border: Border.all(color: purple, width: 1),
         ),
         child: Row(
           children: [
             Text(
               label,
-              style: AppTextStyles.inputHint.copyWith(
-                fontSize: AppResponsive.sp(14),
-                color: const Color(0xFFA9A9A9),
+              style: AppTextStyles.inputText.copyWith(
+                fontSize: AppResponsive.sp(13),
+                color: const Color(0xFF4B4B4B),
               ),
             ),
             const Spacer(),
             Container(
-              width: AppResponsive.w(20),
-              height: AppResponsive.w(20),
+              width: AppResponsive.w(28),
+              height: AppResponsive.h(14),
               decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                border: Border.all(
-                  color: const Color(0xFFA774FF),
-                  width: 1.5,
-                ),
+                color: const Color(0xFFE8E8E8),
+                borderRadius: BorderRadius.circular(AppResponsive.r(30)),
               ),
-              child: selected
-                  ? Center(
+              child: Align(
+                alignment: selected
+                    ? Alignment.centerRight
+                    : Alignment.centerLeft,
                 child: Container(
-                  width: AppResponsive.w(10),
-                  height: AppResponsive.w(10),
+                  width: AppResponsive.w(14),
+                  height: AppResponsive.w(14),
                   decoration: const BoxDecoration(
-                    color: Color(0xFFA774FF),
+                    color: Color(0xFFB8B8B8),
                     shape: BoxShape.circle,
                   ),
+                  child: Icon(
+                    Icons.close,
+                    size: AppResponsive.sp(9),
+                    color: AppColors.white,
+                  ),
                 ),
-              )
-                  : null,
+              ),
             ),
           ],
         ),
@@ -186,80 +204,105 @@ class _ReplyRadioBox extends StatelessWidget {
   }
 }
 
-class _KeywordField extends StatelessWidget {
-  final bool enabled;
-  final ValueChanged<String> onChanged;
-  final VoidCallback onAddTap;
+class _KeywordInput extends StatelessWidget {
+  final AutoDmController controller;
 
-  const _KeywordField({
-    required this.enabled,
-    required this.onChanged,
-    required this.onAddTap,
-  });
+  const _KeywordInput({required this.controller});
+
+  static const Color purple = Color(0xFFC78BFF);
 
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: AppResponsive.h(43),
+      height: AppResponsive.h(40),
       child: TextField(
-        enabled: enabled,
-        onChanged: onChanged,
+        controller: controller.keywordController,
+        onTap: () {
+          controller.selectReplyTo(ReplyToType.specificKeywords);
+        },
+        onSubmitted: (_) => controller.addKeyword(),
         style: AppTextStyles.inputText.copyWith(
-          fontSize: AppResponsive.sp(14),
+          fontSize: AppResponsive.sp(13),
           color: AppColors.black,
         ),
         decoration: InputDecoration(
           hintText: 'Type Here',
           hintStyle: AppTextStyles.inputHint.copyWith(
-            fontSize: AppResponsive.sp(14),
-            color: const Color(0xFFB5B5B5),
+            fontSize: AppResponsive.sp(13),
+            color: const Color(0xFFB8B8B8),
           ),
           filled: true,
           fillColor: AppColors.white,
-          contentPadding: EdgeInsets.symmetric(
-            horizontal: AppResponsive.w(14),
-            vertical: 0,
-          ),
+          contentPadding: EdgeInsets.symmetric(horizontal: AppResponsive.w(14)),
           suffixIcon: GestureDetector(
-            onTap: onAddTap,
+            onTap: controller.addKeyword,
             child: Container(
-              margin: EdgeInsets.all(AppResponsive.w(10)),
+              width: AppResponsive.w(20),
+              height: AppResponsive.w(20),
+              margin: EdgeInsets.all(AppResponsive.w(8)),
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
-                border: Border.all(
-                  color: const Color(0xFFA774FF),
-                  width: 1.2,
-                ),
+                border: Border.all(color: purple, width: 1.2),
               ),
               child: Icon(
                 Icons.add,
-                size: AppResponsive.sp(16),
-                color: const Color(0xFFA774FF),
+                size: AppResponsive.sp(15),
+                color: const Color(0xFFA66BFF),
               ),
             ),
           ),
           enabledBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(AppResponsive.r(14)),
-            borderSide: const BorderSide(
-              color: Color(0xFFD6B8FF),
-              width: 1,
-            ),
+            borderRadius: BorderRadius.circular(AppResponsive.r(30)),
+            borderSide: const BorderSide(color: purple, width: 1),
           ),
           focusedBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(AppResponsive.r(14)),
-            borderSide: const BorderSide(
-              color: Color(0xFFA774FF),
-              width: 1.2,
-            ),
-          ),
-          disabledBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(AppResponsive.r(14)),
-            borderSide: const BorderSide(
-              color: Color(0xFFD6B8FF),
-              width: 1,
-            ),
+            borderRadius: BorderRadius.circular(AppResponsive.r(30)),
+            borderSide: const BorderSide(color: purple, width: 1.2),
           ),
         ),
+      ),
+    );
+  }
+}
+
+class _KeywordChip extends StatelessWidget {
+  final String label;
+  final VoidCallback onRemove;
+
+  const _KeywordChip({required this.label, required this.onRemove});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: EdgeInsets.symmetric(
+        horizontal: AppResponsive.w(12),
+        vertical: AppResponsive.h(7),
+      ),
+      decoration: BoxDecoration(
+        color: const Color(0xFFF4ECFF),
+        borderRadius: BorderRadius.circular(AppResponsive.r(20)),
+      ),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Text(
+            label,
+            style: AppTextStyles.inputText.copyWith(
+              fontSize: AppResponsive.sp(12),
+              color: const Color(0xFF8B5CF6),
+              fontWeight: FontWeight.w600,
+            ),
+          ),
+          SizedBox(width: AppResponsive.w(6)),
+          GestureDetector(
+            onTap: onRemove,
+            child: Icon(
+              Icons.close,
+              size: AppResponsive.sp(14),
+              color: const Color(0xFF8B5CF6),
+            ),
+          ),
+        ],
       ),
     );
   }

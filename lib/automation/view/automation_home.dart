@@ -16,53 +16,83 @@ class LiveAutomationPreviewScreen extends StatelessWidget {
     AppResponsive.init(context);
 
     return Scaffold(
+      backgroundColor: AppColors.white,
       appBar: const AppBarWidget(title: 'Smart Auto DM'),
       body: SafeArea(
-        child: SingleChildScrollView(
-          padding: EdgeInsets.symmetric(horizontal: AppResponsive.w(18)),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              Text(
-                'Live Automations Preview',
-                style: AppTextStyles.fieldLabel.copyWith(
-                  fontSize: AppResponsive.sp(14),
-                  color: AppColors.greyText,
+        child: Column(
+          children: [
+            Expanded(
+              child: SingleChildScrollView(
+                padding: EdgeInsets.symmetric(horizontal: AppResponsive.w(18)),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    SizedBox(height: AppResponsive.h(8)),
+
+                    Text(
+                      'Live Automations Preview',
+                      style: AppTextStyles.fieldLabel.copyWith(
+                        fontSize: AppResponsive.sp(14),
+                        color: AppColors.greyText,
+                      ),
+                    ),
+
+                    SizedBox(height: AppResponsive.h(12)),
+
+                    const _ChatPreviewCard(),
+
+                    SizedBox(height: AppResponsive.h(18)),
+
+                    Text(
+                      'Automate conversations. Grow effortlessly.',
+                      textAlign: TextAlign.center,
+                      style: AppTextStyles.cardTitle.copyWith(
+                        fontSize: AppResponsive.sp(13),
+                      ),
+                    ),
+
+                    SizedBox(height: AppResponsive.h(15)),
+
+                    const _CreateAutomationCardContent(),
+
+                    SizedBox(height: AppResponsive.h(28)),
+                  ],
                 ),
               ),
-              SizedBox(height: AppResponsive.h(12)),
-              _ChatPreviewCard(),
-              SizedBox(height: AppResponsive.h(18)),
-              Center(
-                child: Text(
-                  'Automate conversations. Grow effortlessly.',
-                  textAlign: TextAlign.center,
-                  style: AppTextStyles.cardTitle.copyWith(
-                    fontSize: AppResponsive.sp(13),
-                  ),
+            ),
+
+            /// Fixed bottom button
+            Container(
+              color: AppColors.white,
+              padding: EdgeInsets.fromLTRB(
+                AppResponsive.w(18),
+                AppResponsive.h(10),
+                AppResponsive.w(18),
+                AppResponsive.h(20),
+              ),
+              child: SizedBox(
+                width: double.infinity,
+                height: AppResponsive.h(50),
+                child: GradientButton(
+                  label: 'Create Automation',
+                  onTap: () => Get.toNamed(AppRoutes.triggerType),
                 ),
               ),
-              SizedBox(height: AppResponsive.h(15)),
-              _CreateAutomationCard(
-                onCreate: () => Get.toNamed(AppRoutes.triggerType),
-              ),
-              SizedBox(height: AppResponsive.h(20)),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );
   }
 }
 
-/// The dark chat-bubble mock shown at the top of the screen.
 class _ChatPreviewCard extends StatelessWidget {
   const _ChatPreviewCard();
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: AppResponsive.w(358),
+      width: double.infinity,
       padding: EdgeInsets.all(AppResponsive.w(18)),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(AppResponsive.r(30)),
@@ -70,17 +100,17 @@ class _ChatPreviewCard extends StatelessWidget {
           begin: Alignment.topCenter,
           end: Alignment.bottomCenter,
           colors: [
-            Colors.white.withValues(alpha: .55),
-            const Color(0xFFF7F2FF).withValues(alpha: .55),
+            Colors.white.withOpacity(.55),
+            const Color(0xFFF7F2FF).withOpacity(.55),
           ],
         ),
         border: Border.all(
-          color: const Color(0xFFA774FF).withValues(alpha: .44),
+          color: const Color(0xFFA774FF).withOpacity(.44),
           width: 1,
         ),
         boxShadow: [
           BoxShadow(
-            color: const Color(0xFFA774FF).withValues(alpha: .15),
+            color: const Color(0xFFA774FF).withOpacity(.15),
             blurRadius: 18,
             offset: const Offset(0, 8),
           ),
@@ -88,14 +118,13 @@ class _ChatPreviewCard extends StatelessWidget {
       ),
       child: Column(
         children: [
-          /// Incoming Message
           Align(
             alignment: Alignment.centerLeft,
             child: Container(
               width: AppResponsive.w(240),
               padding: EdgeInsets.all(AppResponsive.w(16)),
               decoration: BoxDecoration(
-                color: Colors.white,
+                color: AppColors.white,
                 borderRadius: BorderRadius.circular(AppResponsive.r(12)),
                 border: Border.all(color: Colors.grey.shade300),
               ),
@@ -110,9 +139,7 @@ class _ChatPreviewCard extends StatelessWidget {
                       height: 1.4,
                     ),
                   ),
-
                   SizedBox(height: AppResponsive.h(9)),
-
                   Container(
                     width: double.infinity,
                     alignment: Alignment.center,
@@ -124,7 +151,7 @@ class _ChatPreviewCard extends StatelessWidget {
                       borderRadius: BorderRadius.circular(AppResponsive.r(8)),
                     ),
                     child: Text(
-                      "Send me the link",
+                      'Send me the link',
                       style: AppTextStyles.buttonSecondary.copyWith(
                         fontSize: AppResponsive.sp(12),
                         fontWeight: FontWeight.w700,
@@ -138,7 +165,6 @@ class _ChatPreviewCard extends StatelessWidget {
 
           SizedBox(height: AppResponsive.h(10)),
 
-          /// Purple bubble
           Align(
             alignment: Alignment.centerRight,
             child: Container(
@@ -151,7 +177,7 @@ class _ChatPreviewCard extends StatelessWidget {
                 borderRadius: BorderRadius.circular(AppResponsive.r(12)),
               ),
               child: Text(
-                "Send me the link",
+                'Send me the link',
                 style: AppTextStyles.chatBubble.copyWith(
                   fontSize: AppResponsive.sp(12),
                   color: AppColors.white,
@@ -162,7 +188,6 @@ class _ChatPreviewCard extends StatelessWidget {
 
           SizedBox(height: AppResponsive.h(5)),
 
-          /// Username
           Align(
             alignment: Alignment.centerLeft,
             child: Container(
@@ -171,12 +196,12 @@ class _ChatPreviewCard extends StatelessWidget {
                 vertical: AppResponsive.h(12),
               ),
               decoration: BoxDecoration(
-                color: Colors.white,
+                color: AppColors.white,
                 borderRadius: BorderRadius.circular(AppResponsive.r(12)),
                 border: Border.all(color: Colors.grey.shade300),
               ),
               child: Text(
-                "@label_wildchild",
+                '@label_wildchild',
                 style: AppTextStyles.chatBubble.copyWith(
                   fontSize: AppResponsive.sp(12),
                   color: AppColors.black,
@@ -187,7 +212,6 @@ class _ChatPreviewCard extends StatelessWidget {
 
           SizedBox(height: AppResponsive.h(10)),
 
-          /// Input
           Container(
             height: AppResponsive.h(52),
             padding: EdgeInsets.only(
@@ -195,17 +219,17 @@ class _ChatPreviewCard extends StatelessWidget {
               right: AppResponsive.w(6),
             ),
             decoration: BoxDecoration(
-              color: Colors.white,
+              color: AppColors.white,
               borderRadius: BorderRadius.circular(AppResponsive.r(28)),
               border: Border.all(
-                color: const Color(0xFFA774FF).withValues(alpha: .44),
+                color: const Color(0xFFA774FF).withOpacity(.44),
               ),
             ),
             child: Row(
               children: [
                 Expanded(
                   child: Text(
-                    "Message...",
+                    'Message...',
                     style: AppTextStyles.inputHint.copyWith(
                       fontSize: AppResponsive.sp(13),
                     ),
@@ -220,7 +244,7 @@ class _ChatPreviewCard extends StatelessWidget {
                   ),
                   child: Icon(
                     Icons.arrow_forward_rounded,
-                    color: Colors.white,
+                    color: AppColors.white,
                     size: AppResponsive.sp(22),
                   ),
                 ),
@@ -233,33 +257,30 @@ class _ChatPreviewCard extends StatelessWidget {
   }
 }
 
-class _CreateAutomationCard extends StatelessWidget {
-  final VoidCallback onCreate;
-
-  const _CreateAutomationCard({required this.onCreate});
+class _CreateAutomationCardContent extends StatelessWidget {
+  const _CreateAutomationCardContent();
 
   @override
   Widget build(BuildContext context) {
     return Container(
       width: double.infinity,
-      height: AppResponsive.h(197),
+      height: AppResponsive.h(135),
       padding: EdgeInsets.fromLTRB(
         AppResponsive.w(20),
-        AppResponsive.h(20),
+        AppResponsive.h(18),
         AppResponsive.w(20),
         AppResponsive.h(16),
       ),
       decoration: BoxDecoration(
-        color: Colors.white.withValues(alpha: 0.59),
+        color: Colors.white.withOpacity(.59),
         borderRadius: BorderRadius.circular(AppResponsive.r(25)),
         border: Border.all(
-          color: const Color(0xFFA774FF).withValues(alpha: 0.41),
+          color: const Color(0xFFA774FF).withOpacity(.41),
           width: 1,
         ),
       ),
       child: Stack(
         children: [
-          /// Title full width
           Positioned(
             left: 0,
             top: 0,
@@ -267,6 +288,7 @@ class _CreateAutomationCard extends StatelessWidget {
             child: Text(
               'Create a New Automation',
               maxLines: 1,
+              overflow: TextOverflow.ellipsis,
               style: AppTextStyles.cardTitle.copyWith(
                 fontSize: AppResponsive.sp(16),
                 fontWeight: FontWeight.w700,
@@ -275,50 +297,34 @@ class _CreateAutomationCard extends StatelessWidget {
             ),
           ),
 
-          /// Description only left side
           Positioned(
             left: 0,
             top: AppResponsive.h(34),
             child: SizedBox(
               width: AppResponsive.w(195),
               child: Text(
-                'Create  a new Automation:\n'
-                'Launch a powerful,context\n'
-                'aware workflow for your Instagram DM',
-                maxLines: 4,
-                overflow: TextOverflow.visible,
+                'Create a new Automation:\n'
+                    'Launch a powerful, context\n'
+                    'aware workflow for Instagram DM',
+                maxLines: 3,
+                overflow: TextOverflow.ellipsis,
                 style: AppTextStyles.cardSubtitle.copyWith(
                   fontSize: AppResponsive.sp(12),
-                  height: 1.12,
+                  height: 1.15,
                   color: AppColors.greyText,
                 ),
               ),
             ),
           ),
 
-          /// Robot
           Positioned(
             right: AppResponsive.w(-3),
-            top: AppResponsive.h(20),
+            top: AppResponsive.h(14),
             child: Image.asset(
               'assets/images/robot.png',
               width: AppResponsive.w(106),
               height: AppResponsive.h(90),
               fit: BoxFit.contain,
-            ),
-          ),
-
-          /// Button
-          Positioned(
-            left: AppResponsive.w(10),
-            right: AppResponsive.w(10),
-            bottom: 0,
-            child: SizedBox(
-              height: AppResponsive.h(49),
-              child: GradientButton(
-                label: 'Create Automation',
-                onTap: onCreate,
-              ),
             ),
           ),
         ],

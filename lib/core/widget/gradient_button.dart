@@ -7,12 +7,16 @@ class GradientButton extends StatelessWidget {
   final String label;
   final VoidCallback? onTap;
   final double? width;
+  final double? height;
+  final bool isOutlined;
 
   const GradientButton({
     super.key,
     required this.label,
     this.onTap,
     this.width,
+    this.height,
+    this.isOutlined = false,
   });
 
   @override
@@ -22,12 +26,21 @@ class GradientButton extends StatelessWidget {
       onTap: onTap,
       child: Container(
         width: width ?? double.infinity,
-        height: AppResponsive.h(52),
+        height: height ?? AppResponsive.h(52),
         alignment: Alignment.center,
         decoration: BoxDecoration(
-          gradient: AppColors.primaryGradient,
+          color: isOutlined ? AppColors.white : null,
+          gradient: isOutlined ? null : AppColors.primaryGradient,
           borderRadius: BorderRadius.circular(AppResponsive.r(28)),
-          boxShadow: [
+          border: isOutlined
+              ? Border.all(
+            color: AppColors.greyLight,
+            width: 1.2,
+          )
+              : null,
+          boxShadow: isOutlined
+              ? null
+              : [
             BoxShadow(
               color: AppColors.primary.withOpacity(0.35),
               blurRadius: 14,
@@ -37,39 +50,11 @@ class GradientButton extends StatelessWidget {
         ),
         child: Text(
           label,
-          style: AppTextStyles.buttonPrimary.copyWith(
+          style: isOutlined
+              ? AppTextStyles.buttonSecondary.copyWith(
             fontSize: AppResponsive.sp(15),
-          ),
-        ),
-      ),
-    );
-  }
-}
-
-/// The outlined "Back" button that sits next to [GradientButton].
-class SecondaryButton extends StatelessWidget {
-  final String label;
-  final VoidCallback? onTap;
-
-  const SecondaryButton({super.key, required this.label, this.onTap});
-
-  @override
-  Widget build(BuildContext context) {
-    return InkWell(
-      borderRadius: BorderRadius.circular(AppResponsive.r(28)),
-      onTap: onTap,
-      child: Container(
-        width: AppResponsive.w(100),
-        height: AppResponsive.h(52),
-        alignment: Alignment.center,
-        decoration: BoxDecoration(
-          color: AppColors.white,
-          borderRadius: BorderRadius.circular(AppResponsive.r(28)),
-          border: Border.all(color: AppColors.greyLight, width: 1.2),
-        ),
-        child: Text(
-          label,
-          style: AppTextStyles.buttonSecondary.copyWith(
+          )
+              : AppTextStyles.buttonPrimary.copyWith(
             fontSize: AppResponsive.sp(15),
           ),
         ),

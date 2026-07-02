@@ -1,9 +1,11 @@
 import 'package:get/get.dart';
+import 'package:intership/comment/send_dm.dart';
 import '../../../automation/binding/auto_binding.dart';
 import '../../../automation/view/automation_home.dart';
 import '../../../automation/view/tigger_view.dart';
 import '../../../comment/select.dart';
 import '../../../comment/reply.dart';
+import '../../../comment/sendDm_preview.dart';
 import 'app_routes.dart';
 
 class AppPages {
@@ -31,6 +33,13 @@ class AppPages {
       name: AppRoutes.replyTo,
       page: () => const ReplyToScreen(),
       binding: AutoDmBinding(),
+    ),GetPage(
+      name: AppRoutes.sendAdm,
+      page: () => const SendDmScreen(),
+      binding: AutoDmBinding(),
+    ),GetPage(
+      name: AppRoutes.sendmPreview,
+      page: () => const FollowBeforeDmScreen(),
     ),
   ];
 }
