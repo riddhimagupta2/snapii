@@ -61,10 +61,10 @@ class ReplyToScreen extends StatelessWidget {
               SizedBox(height: AppResponsive.h(50)),
 
               Obx(
-                () => _ReplyChoiceBox(
+                    () => _ReplyChoiceBox(
                   label: 'Any Comment',
-                  selected: c.selectedReplyTo.value == ReplyToType.anyComment,
-                  onTap: () => c.selectReplyTo(ReplyToType.anyComment),
+                  selected: c.anyCommentEnabled.value,
+                  onTap: c.toggleAnyComment,
                 ),
               ),
 
@@ -152,47 +152,82 @@ class _ReplyChoiceBox extends StatelessWidget {
   Widget build(BuildContext context) {
     return InkWell(
       onTap: onTap,
-      borderRadius: BorderRadius.circular(AppResponsive.r(30)),
+      borderRadius: BorderRadius.circular(
+        AppResponsive.r(30),
+      ),
       child: Container(
         height: AppResponsive.h(38),
-        padding: EdgeInsets.symmetric(horizontal: AppResponsive.w(14)),
+        padding: EdgeInsets.symmetric(
+          horizontal: AppResponsive.w(14),
+        ),
         decoration: BoxDecoration(
           color: AppColors.white,
-          borderRadius: BorderRadius.circular(AppResponsive.r(30)),
-          border: Border.all(color: purple, width: 1),
+          borderRadius: BorderRadius.circular(
+            AppResponsive.r(30),
+          ),
+          border: Border.all(
+            color: purple,
+            width: 1,
+          ),
         ),
         child: Row(
           children: [
-            Text(
-              label,
-              style: AppTextStyles.inputText.copyWith(
-                fontSize: AppResponsive.sp(13),
-                color: const Color(0xFF4B4B4B),
+            Expanded(
+              child: Text(
+                label,
+                style: AppTextStyles.inputText.copyWith(
+                  fontSize: AppResponsive.sp(13),
+                  color: const Color(0xFF4B4B4B),
+                ),
               ),
             ),
-            const Spacer(),
-            Container(
-              width: AppResponsive.w(28),
-              height: AppResponsive.h(14),
-              decoration: BoxDecoration(
-                color: const Color(0xFFE8E8E8),
-                borderRadius: BorderRadius.circular(AppResponsive.r(30)),
-              ),
-              child: Align(
-                alignment: selected
-                    ? Alignment.centerRight
-                    : Alignment.centerLeft,
-                child: Container(
-                  width: AppResponsive.w(14),
-                  height: AppResponsive.w(14),
-                  decoration: const BoxDecoration(
-                    color: Color(0xFFB8B8B8),
-                    shape: BoxShape.circle,
+
+            GestureDetector(
+              onTap: onTap,
+              child: AnimatedContainer(
+                duration: const Duration(
+                  milliseconds: 200,
+                ),
+                curve: Curves.easeInOut,
+                width: AppResponsive.w(30),
+                height: AppResponsive.h(16),
+                padding: EdgeInsets.all(
+                  AppResponsive.w(1),
+                ),
+                decoration: BoxDecoration(
+                  color: selected
+                      ? AppColors.primary
+                      : const Color(0xFFE8E8E8),
+                  borderRadius: BorderRadius.circular(
+                    AppResponsive.r(30),
                   ),
-                  child: Icon(
-                    Icons.close,
-                    size: AppResponsive.sp(9),
-                    color: AppColors.white,
+                ),
+                child: AnimatedAlign(
+                  duration: const Duration(
+                    milliseconds: 200,
+                  ),
+                  curve: Curves.easeInOut,
+                  alignment: selected
+                      ? Alignment.centerRight
+                      : Alignment.centerLeft,
+                  child: Container(
+                    width: AppResponsive.w(14),
+                    height: AppResponsive.w(14),
+                    decoration: BoxDecoration(
+                      color: selected
+                          ? AppColors.white
+                          : const Color(0xFFB8B8B8),
+                      shape: BoxShape.circle,
+                    ),
+                    child: Icon(
+                      selected
+                          ? Icons.check
+                          : Icons.close,
+                      size: AppResponsive.sp(9),
+                      color: selected
+                          ? AppColors.primary
+                          : AppColors.white,
+                    ),
                   ),
                 ),
               ),

@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 
 class AppResponsive {
-
-  static const double _designWidth = 351.0;
-  static const double _designHeight = 780.0;
+  static const double _designWidth = 375.0;
+  static const double _designHeight = 812.0;
 
   static late double _width;
   static late double _height;
