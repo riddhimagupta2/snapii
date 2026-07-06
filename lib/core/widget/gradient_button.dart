@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+
 import '../constant/app_colors.dart';
 import '../constant/app_responsive.dart';
 import '../constant/app_text.dart';
@@ -21,41 +22,43 @@ class GradientButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return InkWell(
-      borderRadius: BorderRadius.circular(AppResponsive.r(28)),
-      onTap: onTap,
-      child: Container(
-        width: width ?? double.infinity,
-        height: height ?? AppResponsive.h(52),
-        alignment: Alignment.center,
-        decoration: BoxDecoration(
-          color: isOutlined ? AppColors.white : null,
-          gradient: isOutlined ? null : AppColors.primaryGradient,
-          borderRadius: BorderRadius.circular(AppResponsive.r(28)),
-          border: isOutlined
-              ? Border.all(
-            color: AppColors.greyLight,
-            width: 1.2,
-          )
-              : null,
-          boxShadow: isOutlined
-              ? null
-              : [
-            BoxShadow(
-              color: AppColors.primary.withOpacity(0.35),
-              blurRadius: 14,
-              offset: const Offset(0, 6),
+    final borderRadius = BorderRadius.circular(
+      AppResponsive.r(28),
+    );
+
+    return Material(
+      color: Colors.transparent,
+      borderRadius: borderRadius,
+      child: InkWell(
+        onTap: onTap,
+        borderRadius: borderRadius,
+        child: Ink(
+          width: width ?? double.infinity,
+          height: height ?? AppResponsive.h(52),
+          decoration: BoxDecoration(
+            color: isOutlined ? AppColors.white : null,
+            gradient: isOutlined ? null : AppColors.primaryGradient,
+            borderRadius: borderRadius,
+            border: isOutlined
+                ? Border.all(
+              color: AppColors.greyLight,
+              width: 1.2,
+            )
+                : null,
+            boxShadow: null,
+          ),
+          child: Center(
+            child: Text(
+              label,
+              textAlign: TextAlign.center,
+              style: isOutlined
+                  ? AppTextStyles.buttonSecondary.copyWith(
+                fontSize: AppResponsive.sp(15),
+              )
+                  : AppTextStyles.buttonPrimary.copyWith(
+                fontSize: AppResponsive.sp(15),
+              ),
             ),
-          ],
-        ),
-        child: Text(
-          label,
-          style: isOutlined
-              ? AppTextStyles.buttonSecondary.copyWith(
-            fontSize: AppResponsive.sp(15),
-          )
-              : AppTextStyles.buttonPrimary.copyWith(
-            fontSize: AppResponsive.sp(15),
           ),
         ),
       ),

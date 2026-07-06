@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+import '../../../core/widget/step_progress_indicator.dart';
 import '../automation/controller/autodm_con.dart';
-import '../core/constant/app_colors.dart';
-import '../core/constant/app_responsive.dart';
-import '../core/constant/app_text.dart';
-import '../core/constant/routes/app_routes.dart';
-import '../core/widget/gradient_button.dart';
-import '../core/widget/step_progress_indicator.dart';
+import '../../../../core/constant/app_colors.dart';
+import '../../../../core/constant/app_responsive.dart';
+import '../../../../core/constant/app_text.dart';
+import '../../../../core/constant/routes/app_routes.dart';
+import '../../../../core/widget/gradient_button.dart';
+
 
 class OptionalActionScreen extends StatelessWidget {
   const OptionalActionScreen({super.key});

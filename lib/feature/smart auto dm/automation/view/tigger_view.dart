@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import '../../core/constant/app_colors.dart';
-import '../../core/constant/app_responsive.dart';
-import '../../core/constant/app_text.dart';
-import '../../core/constant/routes/app_routes.dart';
-import '../../core/widget/app_bar.dart';
-import '../../core/widget/gradient_button.dart';
-import '../../core/widget/tiggeroptiontile.dart';
+import '../../../../core/constant/app_colors.dart';
+import '../../../../core/constant/app_responsive.dart';
+import '../../../../core/constant/app_text.dart';
+import '../../../../core/constant/routes/app_routes.dart';
+import '../../../../core/widget/app_bar.dart';
+import '../../../../core/widget/gradient_button.dart';
+
+
+import '../../../../core/widget/tiggeroptiontile.dart';
 import '../controller/autodm_con.dart';
 
 
@@ -114,7 +116,13 @@ class TriggerTypeScreen extends StatelessWidget {
                   height: AppResponsive.h(45),
                   child: GradientButton(
                     label: 'Next',
-                    onTap: () => Get.toNamed(AppRoutes.selectPost),
+                    onTap: () {
+                      if (c.selectedTrigger.value == TriggerType.autoReply) {
+                        Get.toNamed(AppRoutes.autoReplySetup);
+                      } else {
+                        Get.toNamed(AppRoutes.selectPost);
+                      }
+                    },
                   ),
                 ),
               ),

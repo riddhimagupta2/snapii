@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-import '../../core/constant/app_colors.dart';
-import '../../core/constant/app_responsive.dart';
-import '../../core/constant/app_text.dart';
-import '../../core/constant/routes/app_routes.dart';
-import '../../core/widget/app_bar.dart';
-import '../../core/widget/gradient_button.dart';
+import '../../../../core/constant/app_colors.dart';
+import '../../../../core/constant/app_responsive.dart';
+import '../../../../core/constant/app_text.dart';
+import '../../../../core/constant/routes/app_routes.dart';
+import '../../../../core/widget/app_bar.dart';
+import '../../../../core/widget/gradient_button.dart';
+
 
 class LiveAutomationPreviewScreen extends StatelessWidget {
   const LiveAutomationPreviewScreen({super.key});

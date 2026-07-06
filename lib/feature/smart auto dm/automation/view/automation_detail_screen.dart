@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-import '../../core/constant/app_colors.dart';
-import '../../core/constant/app_responsive.dart';
-import '../../core/constant/app_text.dart';
+import '../../../../core/constant/app_colors.dart';
+import '../../../../core/constant/app_responsive.dart';
+import '../../../../core/constant/app_text.dart';
+import '../../../../core/constant/routes/app_routes.dart';
 
 class AutomationDetailScreen extends StatelessWidget {
   const AutomationDetailScreen({super.key});
@@ -461,7 +462,7 @@ class _ActionButtons extends StatelessWidget {
       children: [
         _SmallActionButton(
           label: 'Edit',
-          onTap: () {},
+          onTap: () => Get.toNamed(AppRoutes.selectPost),
         ),
         SizedBox(width: AppResponsive.w(8)),
         _SmallActionButton(
@@ -471,7 +472,7 @@ class _ActionButtons extends StatelessWidget {
         SizedBox(width: AppResponsive.w(8)),
         _SmallActionButton(
           label: 'Preview',
-          onTap: () {},
+          onTap: () {Get.toNamed(AppRoutes.previewAuto);},
         ),
         SizedBox(width: AppResponsive.w(8)),
         _SmallActionButton(
