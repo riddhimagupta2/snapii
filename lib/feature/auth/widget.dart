@@ -21,8 +21,8 @@ class _AuthTopPainter extends CustomPainter {
     final bgPaint = Paint()
       ..shader = const LinearGradient(
         colors: [
-          Color(0xFFF1E4FF),
-          AppColors.white,
+          Color(0xFFEBD9FF),
+          Color(0xFFFFFFFF),
         ],
         begin: Alignment.topCenter,
         end: Alignment.bottomCenter,

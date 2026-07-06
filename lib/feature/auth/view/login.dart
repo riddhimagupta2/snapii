@@ -1,81 +1,123 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+import '../../../core/constant/app_colors.dart';
+import '../../../core/constant/app_responsive.dart';
+import '../../../core/constant/app_text.dart';
+import '../../../core/widget/custom_textfield.dart';
+import '../../../core/widget/gradient_button.dart';
 import '../controller/auth_cont.dart';
+import '../widget.dart';
 
-class LoginScreen extends StatelessWidget {
-  LoginScreen({super.key});
-
-  final AuthController controller = Get.put(AuthController(), permanent: true);
+class LoginScreen extends GetView<AuthController> {
+  const LoginScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: const Text('Login')),
-      body: SafeArea(
-        child: SingleChildScrollView(
-          padding: const EdgeInsets.all(20),
-          child: Column(
-            children: [
-              TextField(
-                controller: controller.loginEmailController,
-                keyboardType: TextInputType.emailAddress,
-                decoration: const InputDecoration(
-                  labelText: 'Email',
-                  prefixIcon: Icon(Icons.email_outlined),
-                ),
-              ),
-              const SizedBox(height: 16),
+    AppResponsive.init(context);
 
-              Obx(
-                () => TextField(
-                  controller: controller.loginPasswordController,
-                  obscureText: controller.isPasswordHidden.value,
-                  decoration: InputDecoration(
-                    labelText: 'Password',
-                    prefixIcon: const Icon(Icons.lock_outline),
-                    suffixIcon: IconButton(
-                      onPressed: controller.togglePassword,
-                      icon: Icon(
-                        controller.isPasswordHidden.value
-                            ? Icons.visibility_off_outlined
-                            : Icons.visibility_outlined,
+    return Scaffold(
+      backgroundColor: AppColors.white,
+      body: Stack(
+        children: [
+          const AuthTopBackground(),
+
+          SingleChildScrollView(
+            padding: EdgeInsets.symmetric(
+              horizontal: AppResponsive.w(54),
+            ),
+            child: Form(
+              key: controller.loginKey,
+              child: Column(
+                children: [
+                  SizedBox(
+                    height: AppResponsive.h(165),
+                  ),
+
+                  Text(
+                    'Login',
+                    style: AppTextStyles.heading.copyWith(
+                      fontSize: AppResponsive.sp(18),
+                      fontWeight: FontWeight.w700,
+                    ),
+                  ),
+
+                  SizedBox(
+                    height: AppResponsive.h(70),
+                  ),
+
+                  CustomTextField(
+                    label: 'Email',
+                    hint: 'John Doe',
+                    controller: controller.loginEmailController,
+                    keyboardType: TextInputType.emailAddress,
+                    validator: controller.validateEmail,
+                  ),
+
+                  SizedBox(
+                    height: AppResponsive.h(28),
+                  ),
+
+                  Obx(
+                        () => CustomTextField(
+                      label: 'Password',
+                      hint: '********',
+                      controller: controller.loginPasswordController,
+                      obscureText: controller.hideLoginPassword.value,
+                      validator: controller.validatePassword,
+                      suffixIcon: IconButton(
+                        onPressed: controller.toggleLoginPassword,
+                        icon: Icon(
+                          controller.hideLoginPassword.value
+                              ? Icons.visibility_off_outlined
+                              : Icons.visibility_outlined,
+                          size: AppResponsive.sp(16),
+                          color: AppColors.greyText,
+                        ),
                       ),
                     ),
                   ),
-                ),
-              ),
 
-              const SizedBox(height: 24),
-
-              Obx(
-                () => SizedBox(
-                  width: double.infinity,
-                  height: 48,
-                  child: ElevatedButton(
-                    onPressed: controller.isLoginLoading.value
-                        ? null
-                        : controller.login,
-                    child: controller.isLoginLoading.value
-                        ? const SizedBox(
-                            height: 20,
-                            width: 20,
-                            child: CircularProgressIndicator(strokeWidth: 2),
-                          )
-                        : const Text('Login'),
+                  SizedBox(
+                    height: AppResponsive.h(8),
                   ),
-                ),
-              ),
 
-              const SizedBox(height: 16),
+                  Align(
+                    alignment: Alignment.centerRight,
+                    child: GestureDetector(
+                      onTap: () {},
+                      child: Text(
+                        'Forgot Password',
+                        style: AppTextStyles.caption.copyWith(
+                          color: AppColors.black,
+                          fontSize: AppResponsive.sp(10),
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
+                    ),
+                  ),
 
-              TextButton(
-                onPressed: controller.goToRegister,
-                child: const Text("Don't have an account? Register"),
+                  SizedBox(
+                    height: AppResponsive.h(50),
+                  ),
+
+                  Obx(
+                        () => GradientButton(
+                      label: controller.isLoading.value
+                          ? 'Please wait...'
+                          : 'Login',
+                      isOutlined: true,
+                      height: AppResponsive.h(45),
+                      onTap: controller.isLoading.value
+                          ? null
+                          : controller.login,
+                    ),
+                  ),
+                ],
               ),
-            ],
+            ),
           ),
-        ),
+        ],
       ),
     );
   }

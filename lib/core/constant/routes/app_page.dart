@@ -55,7 +55,7 @@ class AppPages {
 
     GetPage(
       name: AppRoutes.registration,
-      page: () => RegisterScreen(),
+      page: () => RegistrationScreen(),
       binding: AuthBinding(),
     ),
 

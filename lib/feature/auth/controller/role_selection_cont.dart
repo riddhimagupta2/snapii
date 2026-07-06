@@ -29,7 +29,7 @@ class RoleSelectionController extends GetxController {
 
   void selectRole(String role) {
     selectedRole.value = role;
-    Get.offAllNamed(AppRoutes.login);
+    Get.offAllNamed(AppRoutes.registration);
   }
 
   bool isSelected(String role) {

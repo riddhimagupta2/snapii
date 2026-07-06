@@ -177,8 +177,8 @@ class _OnboardingBackgroundPainter extends CustomPainter {
         begin: Alignment.topCenter,
         end: Alignment.bottomCenter,
         colors: [
-          Color(0xFFF2EAFE),
-          AppColors.white,
+          Color(0xFFEBD9FF),
+          Color(0xFFFFFFFF),
         ],
       ).createShader(
         Rect.fromLTWH(0, 0, size.width, size.height),
